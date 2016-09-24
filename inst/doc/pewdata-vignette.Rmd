@@ -1,6 +1,6 @@
 ---
 title: "pewdata: Reproducible Retrieval of Pew Research Center Datasets"
-author: "Frederick Solt"
+author: ["Frederick Solt", "Yue Hu"]
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -14,9 +14,12 @@ The [Pew Research Center](http://www.pewresearch.org), in its [own words](http:/
 
 ## Setup
 
-`pewdata` depends on the Firefox browser; if it is not installed, [get it here](https://www.mozilla.org/firefox).
+When used interactively, the `pew_download` function will be ask for the contact information requested by Pew of those wishing to download its datasets: name, organization, phone, and email. 
+After that information is input once, it will be entered automatically for any other download requests made in the same session.
 
-An optional, but recommended, setup step is to add the contact information Pew requires to your [.Rprofile](http://www.statmethods.net/interface/customizing.html) as in the following example:
+To change this contact information within a session, one may set the argument `reset` to `TRUE` when running `pew_download` again, and the function will again request the required information. 
+
+An optional, but highly recommended, setup step is to add the contact information Pew requires to your [.Rprofile](http://www.statmethods.net/interface/customizing.html) as in the following example:
 
 ```{r eval = FALSE}
 options("pew_name" = "Juanita Herrera",
@@ -30,7 +33,7 @@ The `pew_download` function will then have access the information it needs to pa
 
 ## Use
 
-The `pew_download` function (1) opens a Firefox browser pointed to a specified dataset, (2) enters the required contact information and agrees to the terms and conditions of the download, (3) downloads the dataset's files, and, optionally but by default, (4) decompresses the dataset's files to a subdirectory within a specified directory (or, by default, a `pew_data` directory in the current working directory).
+The `pew_download` function (1) simulates a visit to the website of the specified Pew dataset, (2) enters the required contact information and agrees to the terms and conditions of the download, (3) downloads the dataset's files, and, optionally but by default, (4) decompresses the dataset's files to a subdirectory within a specified directory (or, by default, a `pew_data` directory in the current working directory).
 
 Datasets are specified using the `file_id` and `area` arguments.  The `area` argument indicates which of the seven Pew research areas produced the dataset:
 
@@ -54,14 +57,14 @@ To reproducibly download this dataset:
 pew_download(area = "socialtrends", file_id = 21476)
 ```
 
-For the Pew Forum on Religion & Public Life's dataset Global Restrictions on Religion 2007-2013, the file id is "global-restrictions-on-religion-2007-2013":
+For the Pew Forum on Religion & Public Life's dataset Religion in Latin America, the file id is "religion-in-latin-america":
 
-<img src="global-restrictions.png" style="width: 100%;"/>
+<img src="religion-in-lat-am.png" style="width: 100%;"/>
 
 To download this dataset reproducibly:
 
 ```{r eval=FALSE}
-pew_download(area = "religion", file_id = "global-restrictions-on-religion-2007-2013")
+pew_download(area = "religion", file_id = "religion-in-latin-america")
 ```
 
 Multiple datasets may be downloaded from the same research area in a single command by passing a vector of ids to `file_id`.  The following downloads the Weekly Survey of September 3-7, 2015; the July 2015 Political Survey; and the May 2015 Political Survey from the U.S. Politics & Policy area (which is the default for `area`):

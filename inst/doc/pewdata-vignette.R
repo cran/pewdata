@@ -8,7 +8,7 @@
 #  pew_download(area = "socialtrends", file_id = 21476)
 
 ## ----eval=FALSE----------------------------------------------------------
-#  pew_download(area = "religion", file_id = "global-restrictions-on-religion-2007-2013")
+#  pew_download(area = "religion", file_id = "religion-in-latin-america")
 
 ## ----eval=FALSE----------------------------------------------------------
 #  pew_download(file_id = c(20059613, 20059299, 20058139))
