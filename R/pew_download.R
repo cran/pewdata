@@ -99,13 +99,6 @@ pew_download <- function(area = "politics",
     default_dir <- file.path("", "Users", Sys.info()[["user"]], "Downloads")
   }
   
-  # create specified download directory if necessary
-  if (!dir.exists(file.path(download_dir, file_id))) dir.create(file.path(download_dir, file_id), recursive = TRUE)
-  
-  # get list of current download directory contents
-  if (!dir.exists(download_dir)) dir.create(download_dir, recursive = TRUE)
-  dd_old <- list.files(download_dir)
-  
   # initialize driver
   if(msg) message("Initializing RSelenium driver")
   rD <- RSelenium::rsDriver(browser = "chrome")
@@ -126,7 +119,11 @@ pew_download <- function(area = "politics",
   Sys.sleep(delay)
   remDr$findElement(using = "name", "username")$sendKeysToElement(list(email))
   remDr$findElement(using = "name", "password")$sendKeysToElement(list(password))
-  remDr$findElement(using = "css selector", ".button")$clickElement()
+  if (area == "global") {
+    remDr$findElement(using = "css selector", "#js-prc-user-accounts .button")$clickElement()
+  } else {
+    remDr$findElement(using = "css selector", ".button")$clickElement()
+  }
   Sys.sleep(delay)
   
   # loop through files
@@ -134,6 +131,9 @@ pew_download <- function(area = "politics",
     # show process
     if(msg) message("Downloading Pew file: ", item, sprintf(" (%s)", Sys.time()))
     
+    # create specified download directory if necessary
+    if (!dir.exists(file.path(download_dir, item))) dir.create(file.path(download_dir, item), recursive = TRUE)
+  
     # get list of current default download directory contents
     dd_old <- list.files(default_dir)
     
@@ -148,7 +148,11 @@ pew_download <- function(area = "politics",
     )
     remDr$navigate(url)
     Sys.sleep(delay)
-    remDr$findElement(using = "css selector", ".button")$clickElement()
+    if (area == "global") {
+      remDr$findElement(using = "css selector", "#prc-dataset-widget-3 .button")$clickElement()
+    } else {
+      remDr$findElement(using = "css selector", ".button")$clickElement()
+    }
     
     # agree to terms
     try({remDr$findElement(using = "class name", "checkbox")$clickElement()
